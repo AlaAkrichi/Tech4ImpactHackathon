@@ -18,8 +18,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/authentification', require('./routes/AuthentificationRoutes'));
 
 app.listen(port,()=>{
-    console.log(`server strated on http://localhost:${port}`)
+    console.log(`server strated at http://localhost:${port}`)
 })
 
 
 module.exports = app;
+//tayeb 
