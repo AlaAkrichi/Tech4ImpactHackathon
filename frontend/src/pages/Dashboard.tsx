@@ -173,7 +173,41 @@ const Dashboard = () => {
               color="#F59E0B"
             />
           </div>
-          
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
+            <div className="border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Onboarding Mission</h2>
+              <div className="text-l font-semibold text-gray-600 dark:text-gray-400">
+                Complete the onboarding mission to unlock more adventures!
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="mb-4">
+                <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300">Mission Progress</h3>
+                <ProgressBar progress={65} color="bg-jeel-blue" height={8} />
+                <div className="flex justify-between mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  <span>65% Completed</span>
+                  <span>+150 XP</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <button
+                  className="px-4 py-2 bg-jeel-blue text-white rounded-lg hover:bg-jeel-blue/90 transition-colors"
+                  onClick={() => alert('Mission Started!')}
+                >
+                  Start Mission
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                  onClick={() => alert('View Details')}
+                >
+                  View Details
+                </button>
+              </div>
+              <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                Earn XP by completing tasks like setting up your profile, exploring features, and attending your first event.
+              </div>
+            </div>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Recent Activity / Leaderboard Section */}
             <div className="lg:col-span-2">
@@ -294,7 +328,7 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
+              {/* <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
                 <div className="border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Pending Tasks</h2>
                   <button className="text-sm text-jeel-blue dark:text-jeel-purple flex items-center gap-1 hover:underline">
@@ -368,7 +402,7 @@ const Dashboard = () => {
                   </div>
 
                 </div>
-              </div>
+              </div> */}
               
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">

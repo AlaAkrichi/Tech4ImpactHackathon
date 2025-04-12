@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, Search, Settings, User, Menu, X } from 'lucide-react';
+import { Bell, Search, Settings, User, Menu, X, LogOut } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface NavbarProps {
@@ -60,14 +60,44 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
               <Settings size={20} />
             </button>
             
-            <div className="flex items-center gap-3 ml-4">
-              <div className="flex flex-col items-end">
-                <span className="font-medium">Alex Kim</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">Level 7</span>
-              </div>
-              <div className="h-10 w-10 bg-jeel-purple/10 rounded-full flex items-center justify-center">
-                <span className="text-jeel-purple font-medium">AK</span>
-              </div>
+            <div className="relative">
+              <button 
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-3 ml-4"
+              >
+                <div className="flex flex-col items-end">
+                  <span className="font-medium">Alex Kim</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Level 7</span>
+                </div>
+                <div className="h-10 w-10 bg-jeel-purple/10 rounded-full flex items-center justify-center">
+                  <span className="text-jeel-purple font-medium">AK</span>
+                </div>
+              </button>
+              
+              {/* Dropdown Menu */}
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <User size={16} />
+                    <span>Go to Profile</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      // Add your logout logic here
+                      console.log('Logging out...');
+                      setIsProfileOpen(false);
+                    }}
+                    className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

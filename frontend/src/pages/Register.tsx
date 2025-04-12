@@ -549,7 +549,7 @@ const Register = () => {
                   </div>
                 </div>
                 {/* Discord Server Button */}
-                <div className="space-y-4">
+                {/* <div className="space-y-4">
                   <div className="flex items-center p-4 bg-[#5865F2]/10 rounded-lg">
                     <div className="flex-shrink-0 h-12 w-12 bg-[#5865F2]/20 rounded-full flex items-center justify-center">
                       <MessageCircle size={24} className="text-[#5865F2]" />
@@ -573,7 +573,7 @@ const Register = () => {
                     </svg>
                     Join Discord Server
                   </a>
-                </div>
+                </div> */}
               
               </div>
             )}

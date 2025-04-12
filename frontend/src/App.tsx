@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route, useRoutes } from "react-router-dom";
 import { routes } from './routes';
+import AIAssistant from "./components/AIAssistant";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
       <Router>
         <AppRoutes />
       </Router>
+      <AIAssistant onClick={() => console.log('AI Assistant clicked')} />
     </TooltipProvider>
   </QueryClientProvider>
 );

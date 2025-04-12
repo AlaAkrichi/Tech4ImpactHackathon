@@ -22,9 +22,9 @@ export const routes: RouteObject[] = [
   {
     path: '/dashboard',
     element: (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <Dashboard />
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
   },
   {
