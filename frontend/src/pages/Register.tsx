@@ -33,35 +33,35 @@ const Register = () => {
   };
   
   const handleNext = () => {
-    // if (step === 1) {
-    //   // Step 1 validation
-    //   if (!formData.firstName || !formData.lastName) {
-    //     toast.error('Please enter your first and last name');
-    //     return;
-    //   }
+    if (step === 1) {
+      // Step 1 validation
+      if (!formData.firstName || !formData.lastName) {
+        toast.error('Please enter your first and last name');
+        return;
+      }
       
-    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //   if (!emailRegex.test(formData.email)) {
-    //     toast.error('Please enter a valid email address');
-    //     return;
-    //   }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        toast.error('Please enter a valid email address');
+        return;
+      }
       
-    //   if (formData.password.length < 8) {
-    //     toast.error('Password must be at least 8 characters long');
-    //     return;
-    //   }
+      if (formData.password.length < 8) {
+        toast.error('Password must be at least 8 characters long');
+        return;
+      }
       
-    //   if (formData.password !== formData.confirmPassword) {
-    //     toast.error('Passwords do not match');
-    //     return;
-    //   }
-    // } else if (step === 2) {
-    //   // Step 2 validation
-    //   if (!formData.institution || !formData.major || !formData.yearOfStudy) {
-    //     toast.error('Please fill in all academic information');
-    //     return;
-    //   }
-    // }
+      if (formData.password !== formData.confirmPassword) {
+        toast.error('Passwords do not match');
+        return;
+      }
+    } else if (step === 2) {
+      // Step 2 validation
+      if (!formData.institution || !formData.major || !formData.yearOfStudy) {
+        toast.error('Please fill in all academic information');
+        return;
+      }
+    }
     
     if (step < 3) {
       setStep(step + 1);
