@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bell, Search, Settings, User, Menu, X, LogOut } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { logout } from '@/slices/authSlice';
 
 interface NavbarProps {
   toggleSidebar?: () => void;
@@ -9,6 +10,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
+    const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isNotificationOpen, setIsNotificationOpen] = React.useState(false);
   const [isProfileOpen, setIsProfileOpen] = React.useState(false);
@@ -89,6 +91,9 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
                     onClick={() => {
                       // Add your logout logic here
                       console.log('Logging out...');
+                      navigate("/")
+                      logout()
+
                       setIsProfileOpen(false);
                     }}
                     className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"

@@ -140,14 +140,14 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
-  const id = genId()
+  const id = genId();
 
   const update = (props: ToasterToast) =>
     dispatch({
       type: "UPDATE_TOAST",
       toast: { ...props, id },
-    })
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
+    });
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id });
 
   dispatch({
     type: "ADD_TOAST",
@@ -156,16 +156,34 @@ function toast({ ...props }: Toast) {
       id,
       open: true,
       onOpenChange: (open) => {
-        if (!open) dismiss()
+        if (!open) dismiss();
+      },
+      // Add custom styles for the toast
+      style: {
+        backgroundColor: "#1E293B", // Dark background
+        color: "#F8FAFC", // Light text color
+        fontSize: "1.25rem", // Slightly larger font size
+        padding: "1.5rem", // Add padding for a bigger appearance
+        borderRadius: "12px", // More rounded corners
+        boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", // Stronger shadow
+        border: "1px solid #3B82F6", // Optional border
+        textAlign: "center", // Center-align text
+        maxWidth: "400px", // Limit width for better appearance
+        margin: "0 auto", // Center horizontally
+        position: "fixed", // Fix position for middle placement
+        top: "50%", // Center vertically
+        left: "50%", // Center horizontally
+        transform: "translate(-50%, -50%)", // Adjust for perfect centering
+        zIndex: 9999, // Ensure it appears above other elements
       },
     },
-  })
+  });
 
   return {
     id: id,
     dismiss,
     update,
-  }
+  };
 }
 
 function useToast() {

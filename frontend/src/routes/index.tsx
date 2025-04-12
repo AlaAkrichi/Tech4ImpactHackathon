@@ -5,6 +5,7 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Dashboard from '@/pages/Dashboard';
 import NotFound from '@/pages/NotFound';
+import { WaitingList } from '@/pages/WaitingList';
 
 export const routes: RouteObject[] = [
   {
@@ -20,11 +21,19 @@ export const routes: RouteObject[] = [
     element: <Register />,
   },
   {
+    path:"/waitinglist",
+    element:(
+      <ProtectedRoute>
+        <WaitingList/>
+      </ProtectedRoute>
+    )
+  },
+  {
     path: '/dashboard',
     element: (
-      // <ProtectedRoute>
+       <ProtectedRoute>
         <Dashboard />
-      // </ProtectedRoute>
+     </ProtectedRoute>
     ),
   },
   {
