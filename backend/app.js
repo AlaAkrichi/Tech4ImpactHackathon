@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
+const app = express()
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');

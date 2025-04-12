@@ -95,8 +95,8 @@ const Register = () => {
     // TODO: Replace with actual API call
     if (step === 3) {
       setIsSubmitting(true);
-      
-      fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+      console.log(import.meta.env.VITE_API_URL)
+      fetch(`${import.meta.env.VITE_API_URL}/authentification/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
