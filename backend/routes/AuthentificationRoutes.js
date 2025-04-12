@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const SECRET = 'your_secret_key';
 const {test,registeruser} = require('../controllers/Authentificationcontroller');
 
 router.use(cors({
