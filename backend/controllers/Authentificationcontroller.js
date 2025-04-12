@@ -68,7 +68,7 @@ const makeToken = (id, email) => {
       if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
   
       // Optional: generate a token
-      const token = jwt.sign({ id: user._id }, SECRET, { expiresIn: '1h' });
+      const token = makeToken(user._id,user.email)
   
       // Send response
       res.status(200).json({
@@ -76,11 +76,11 @@ const makeToken = (id, email) => {
         token, // optional
         user: {
           id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: user.firstname,
+          lastName: user.lastname,
           email: user.email,
           institution: user.institution,
-          yearOfStudy: user.yearOfStudy,
+          yearOfStudy: user.yearOfstudy,
           major: user.major
         }
       });
@@ -93,4 +93,4 @@ const makeToken = (id, email) => {
   
 
 
-module.exports = {test,registeruser}
+module.exports = {test,registeruser,loginuser}
