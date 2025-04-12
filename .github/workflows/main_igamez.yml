@@ -1,4 +1,4 @@
-name: Build and deploy Docker Compose app to Azure Web App - igamez
+name: Deploy Docker Compose App to Azure Web App - igamez
 
 on:
   push:
@@ -7,35 +7,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to Azure
+      - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0021F4D66B944356A5F4FCA290502EAB }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AF055FF5562F405DB7EACF7509A5B536 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_7BB502F2830C4F3EBF4A31F012F19A75 }}
 
-      - name: Log in to Azure Container Registry
-        uses: azure/docker-login@v1
-        with:
-          login-server: <your-acr-name>.azurecr.io
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
-
-      - name: Build and push Docker Compose services
-        run: |
-          docker compose -f docker-compose.yml build
-          docker compose -f docker-compose.yml push
-
-      - name: Deploy to Azure Web App with Compose
+      - name: Deploy docker-compose.yml to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'igamez'
-          images: |
-            <your-acr-name>.azurecr.io/your-app-name:latest
+          slot-name: 'Production'
+          compose-file: './docker-compose.yml'
