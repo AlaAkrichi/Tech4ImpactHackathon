@@ -20,6 +20,7 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     "allowImportingTsExtensions": true,
-    "types": ["react", "react-dom"]
+    "types": ["react", "react-dom"],
+    "lib": ["dom", "dom.iterable", "esnext", "es2015"]
   }
 }

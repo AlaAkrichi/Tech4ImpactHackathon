@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, User, Mail, Lock, EyeOff, Eye, UserCircle, MessageCircle } from 'lucide-react';
 import ProgressBar from '@/components/ProgressBar';
-
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 const Register = () => {
   const [step, setStep] = useState(1);
+  const { login } = useAuth();  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -15,11 +18,14 @@ const Register = () => {
     yearOfStudy: '',
     major: '',
     avatar: 1,
+    avatarImage: null as File | null,
   });
-  const [isDiscord, setIsDiscord] = useState(true);
+  const [isDiscord, setIsDiscord] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const navigate = useNavigate();
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -27,6 +33,36 @@ const Register = () => {
   };
   
   const handleNext = () => {
+    // if (step === 1) {
+    //   // Step 1 validation
+    //   if (!formData.firstName || !formData.lastName) {
+    //     toast.error('Please enter your first and last name');
+    //     return;
+    //   }
+      
+    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //   if (!emailRegex.test(formData.email)) {
+    //     toast.error('Please enter a valid email address');
+    //     return;
+    //   }
+      
+    //   if (formData.password.length < 8) {
+    //     toast.error('Password must be at least 8 characters long');
+    //     return;
+    //   }
+      
+    //   if (formData.password !== formData.confirmPassword) {
+    //     toast.error('Passwords do not match');
+    //     return;
+    //   }
+    // } else if (step === 2) {
+    //   // Step 2 validation
+    //   if (!formData.institution || !formData.major || !formData.yearOfStudy) {
+    //     toast.error('Please fill in all academic information');
+    //     return;
+    //   }
+    // }
+    
     if (step < 3) {
       setStep(step + 1);
       window.scrollTo(0, 0);
@@ -42,13 +78,83 @@ const Register = () => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // setIsSubmitting(true);
     
-    // // Simulate registration process
-    // setTimeout(() => {
-    //   setIsSubmitting(false);
-    //   window.location.href = '/dashboard';
-    // }, 1500);
+    // Final validation before submission
+    if (step !== 3) {
+      return;
+    }
+
+    // Validate required fields for step 3
+    if (!formData.avatarImage && !formData.avatar) {
+      toast.error('Please select an avatar or upload an image');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // TODO: Replace with actual API call
+    if (step === 3) {
+      setIsSubmitting(true);
+      
+      fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          institution: formData.institution,
+          yearOfStudy: formData.yearOfStudy,
+          major: formData.major,
+          avatar: formData.avatar
+        })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        login(data.token);
+        toast.success('Account created successfully!');
+        setIsSubmitting(false);
+        navigate('/dashboard');
+      })
+      .catch(error => {
+        toast.error(error.message || 'Failed to create account');
+        setIsSubmitting(false);
+      });
+    }
+  };
+  
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please upload an image file');
+        return;
+      }
+      
+      // Validate file size (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error('Image size should be less than 2MB');
+        return;
+      }
+      
+      setFormData(prev => ({ ...prev, avatarImage: file }));
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
   
   const avatarOptions = [1, 2, 3, 4, 5, 6];
@@ -112,7 +218,7 @@ const Register = () => {
             </div>
           </div>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form className="space-y-6">
             {/* Step 1: Personal Information */}
             {step === 1 && (
               <div className="space-y-6 animate-fade-in">
@@ -330,19 +436,54 @@ const Register = () => {
                   <label className="block text-sm font-medium mb-4">
                     Choose Your Avatar
                   </label>
-                  <div className="grid grid-cols-3 gap-4">
+                  
+                  {/* Image Upload Option */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-center w-full">
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          {avatarPreview ? (
+                            <img 
+                              src={avatarPreview} 
+                              alt="Avatar preview" 
+                              className="w-20 h-20 rounded-full object-cover mb-2"
+                            />
+                          ) : (
+                            <>
+                              <UserCircle size={24} className="text-gray-400 mb-2" />
+                              <p className="mb-2 text-sm text-gray-500">
+                                <span className="font-semibold">Click to upload</span> or drag and drop
+                              </p>
+                              <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 2MB)</p>
+                            </>
+                          )}
+                        </div>
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4 mr-1 p-1 ">
                     {avatarOptions.map((avatar, index) => (
                       <button
                         key={avatar}
                         type="button"
                         className={`
                           h-20 w-full rounded-lg flex items-center justify-center transition-all duration-300
-                          ${formData.avatar === avatar 
+                          ${formData.avatar === avatar && !avatarPreview
                             ? 'ring-2 ring-offset-2 ring-jeel-blue scale-105' 
                             : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:scale-105'
                           }
                         `}
-                        onClick={() => setFormData(prev => ({ ...prev, avatar }))}
+                        onClick={() => {
+                          setFormData(prev => ({ ...prev, avatar }));
+                          setAvatarPreview(null);
+                        }}
                       >
                         <div className={`h-16 w-16 ${avatarColors[index]} rounded-full flex items-center justify-center`}>
                           <UserCircle size={32} className="text-white" />
@@ -382,7 +523,31 @@ const Register = () => {
                     </div>
                   </div>
                 </div>
-                
+                <div className="flex items-center p-4 bg-jeel-purple/10 rounded-lg">
+                  <div className="flex-shrink-0 h-12 w-12 bg-jeel-purple/20 rounded-full flex items-center justify-center">
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      className="text-jeel-purple"
+                    >
+                      <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"></path>
+                      <circle cx="12" cy="8" r="7"></circle>
+                    </svg>
+                  </div>
+                  <div className="ml-4">
+                    <h4 className="text-sm font-medium text-jeel-purple">You're Almost There!</h4>
+                    <p className="text-xs text-gray-600">
+                      Create your account to start earning achievements and connecting with peers
+                    </p>
+                  </div>
+                </div>
                 {/* Discord Server Button */}
                 <div className="space-y-4">
                   <div className="flex items-center p-4 bg-[#5865F2]/10 rounded-lg">
@@ -409,32 +574,7 @@ const Register = () => {
                     Join Discord Server
                   </a>
                 </div>
-                
-                <div className="flex items-center p-4 bg-jeel-purple/10 rounded-lg">
-                  <div className="flex-shrink-0 h-12 w-12 bg-jeel-purple/20 rounded-full flex items-center justify-center">
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      width="24" 
-                      height="24" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                      className="text-jeel-purple"
-                    >
-                      <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"></path>
-                      <circle cx="12" cy="8" r="7"></circle>
-                    </svg>
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="text-sm font-medium text-jeel-purple">You're Almost There!</h4>
-                    <p className="text-xs text-gray-600">
-                      Create your account to start earning achievements and connecting with peers
-                    </p>
-                  </div>
-                </div>
+              
               </div>
             )}
             
@@ -463,8 +603,9 @@ const Register = () => {
                 </button>
               ) : (
                 <button
-                  type="submit"
-                  disabled={isDiscord}
+                  type='button'
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
                   className="py-3 px-6 flex items-center gap-2 bg-jeel-blue text-white rounded-lg font-medium hover:bg-jeel-blue/90 focus:outline-none focus:ring-2 focus:ring-jeel-blue focus:ring-offset-2 transition-all disabled:opacity-70"
                 >
                   {isSubmitting ? (
@@ -478,7 +619,7 @@ const Register = () => {
                   ) : (
                     <>
                       Join the Quest
-                      <ArrowRight size={18} />
+                      <ArrowRight size={18}  />
                     </>
                   )}
                 </button>

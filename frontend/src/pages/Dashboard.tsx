@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Users, 
@@ -134,11 +133,14 @@ const Dashboard = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       
-      <main className={`transition-all duration-300 ${isSidebarOpen ? 'ml-0 md:ml-64 lg:ml-72' : 'ml-0'}`}>
+      <main className={`
+        pt-16 transition-all duration-300
+        ${isSidebarOpen ? 'lg:ml-72' : ''}
+      `}>
         <div className="p-4 md:p-6 lg:p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-1">Welcome back, Alex!</h1>
@@ -146,14 +148,8 @@ const Dashboard = () => {
           </div>
           
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-            <StatsCard 
-              title="Active Students" 
-              value="1,248" 
-              icon={<Users size={20} />} 
-              change={{ value: 12, isPositive: true }}
-              color="#3B82F6"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-4 mb-8">
+          
             <StatsCard 
               title="Total Events" 
               value="32" 
@@ -161,12 +157,14 @@ const Dashboard = () => {
               change={{ value: 8, isPositive: true }}
               color="#8B5CF6"
             />
-            <StatsCard 
+              <StatsCard 
               title="Course Completion" 
-              value="78%" 
-              icon={<BookOpen size={20} />}
+              value="76%" 
+              icon={<BookOpen size={20} />} 
+              change={{ value: 5, isPositive: true }}
               color="#10B981"
             />
+            
             <StatsCard 
               title="Average Engagement" 
               value="86%" 
@@ -368,11 +366,7 @@ const Dashboard = () => {
                       </div>
                     ))}
                   </div>
-                  
-                  <button className="mt-4 w-full py-2 flex items-center justify-center gap-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                    <Plus size={16} />
-                    <span>Add New Task</span>
-                  </button>
+
                 </div>
               </div>
               
