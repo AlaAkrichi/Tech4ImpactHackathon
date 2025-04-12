@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, User, Mail, Lock, EyeOff, Eye, UserCircle, MessageCircle } from 'lucide-react';
 import ProgressBar from '@/components/ProgressBar';
-import { toast } from 'sonner';
+import {  toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 const Register = () => {
@@ -122,7 +122,7 @@ const Register = () => {
         login(data.token);
         toast.success('Account created successfully!');
         setIsSubmitting(false);
-        navigate('/dashboard');
+        navigate('/waitingList');
       })
       .catch(error => {
         toast.error(error.message || 'Failed to create account');
@@ -169,6 +169,9 @@ const Register = () => {
   
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Add the Toaster component at the root level */}
+
+      
       {/* Left Side - Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 lg:p-24">
         <div className="w-full max-w-md">

@@ -52,7 +52,7 @@ const Login = () => {
       login(data.token);
       toast.success('Account created successfully!');
       setIsSubmitting(false);
-      navigate('/dashboard');
+      navigate('/waitingList');
     })
     .catch(error => {
       toast.error(error.message || 'Failed to create account');

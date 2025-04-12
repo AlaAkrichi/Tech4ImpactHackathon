@@ -45,6 +45,10 @@ const  registeruser = asyncHandler (async(req, res)=>{
           res.status(500).json({ message: 'Server error during registration' });
         }
 }) 
+
+const loginUser = asyncHandler(async(req,res)=>{
+    //logic login lena 
+})
 const makeToken = (id, email) => {
     return jwt.sign({ id, email }, process.env.JWT_SECRET, {
       expiresIn: "5d",
